@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="GB2312"?>
+
+<DirectionMatrixResponse> 
+  <status>0</status>  
+  <message>ok</message>  
+  <info> 
+    <copyright> 
+      <text>@2015 Baidu - Data</text>  
+      <imageUrl>http://api.map.baidu.com/images/copyright_logo.png</imageUrl> 
+    </copyright> 
+  </info>  
+  <result> 
+    <elements> 
+      <distance> 
+        <text>6.7公里</text>  
+        <value>6675</value> 
+      </distance>  
+      <duration> 
+        <text>18分钟</text>  
+        <value>1084</value> 
+      </duration> 
+    </elements> 
+  </result> 
+</DirectionMatrixResponse>
