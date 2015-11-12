@@ -3,9 +3,6 @@ package graph;
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
 
-import java.util.Iterator;
-import java.util.Set;
-
 /**
  * Created by yaokaibin on 15-11-11.
  */
@@ -13,7 +10,6 @@ public class EdgeWeightedPheroDigraph {
     private final int V;
     private int E;
     private Bag<DirectedPheromoneEdge>[] adj;
-    private Set<Integer> allowedNodes;
     public EdgeWeightedPheroDigraph(int V){
         this.V=V;
         this.E=0;
@@ -35,7 +31,6 @@ public class EdgeWeightedPheroDigraph {
             //double pheromone=in.readDouble();
             //addEdge(new DirectedPheromoneEdge(v,w,weight,pheromone));
             addEdge(new DirectedPheromoneEdge(v,w,weight,0.0));
-            allowedNodes.add(v);
         }
     }
     public int V(){return V;}
@@ -54,8 +49,5 @@ public class EdgeWeightedPheroDigraph {
             }
         }
         return bag;
-    }
-    public Set<Integer> getAllowedNodes(){
-        return allowedNodes;
     }
 }

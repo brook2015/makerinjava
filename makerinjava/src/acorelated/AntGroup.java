@@ -1,15 +1,15 @@
 package acorelated;
 
-import graph.EdgeWeightedPheroDigraph;
-
-import java.util.Vector;
 import java.util.Random;
+import java.util.Vector;
+
 /**
  * Created by yaokaibin on 15-11-11.
  */
 public class AntGroup {
+
     private int ant_count;
-    private static int node_count;
+    private int node_count;
     private Ant[] ants;
     Vector<Integer> allowedNodes;
     private static Random random=new Random();
@@ -33,10 +33,10 @@ public class AntGroup {
             ants[i].initiate(nodes.get(i),defaultOrigin);
         }
     }
-    public double getLength(){
+    public double getLength(double[][] distance){
         double length=0.0;
         for (Ant ant:ants){
-            length+=ant.getRouteLength();
+            length+=ant.getLength(distance);
         }
         return length;
     }
@@ -47,15 +47,15 @@ public class AntGroup {
         }
         return route;
     }
-    public void iterate(EdgeWeightedPheroDigraph digraph){
+    public void iterate(double[][] pheromone,double[][] distance){
         while (allowedNodes.size()!=0){
             for (int i=0;i<ant_count;i++){
-                ants[i].moveForward(digraph);
+                ants[i].moveForward(pheromone,distance,allowedNodes);
             }
         }
     }
-    public void pheromoneUpdate(EdgeWeightedPheroDigraph digraph){
-        for (Ant ant:ants) ant.pheromoneUpdate(digraph);
+    public void pheromoneUpdate(double[][] pheromone){
+        for (Ant ant:ants) ant.pheromoneUpdate(pheromone);
     }
     public static Vector<Integer> getNodes(int count,int group){
         Vector<Integer> nodes=new Vector<>(group);
@@ -70,13 +70,6 @@ public class AntGroup {
         int sum=0;
         for (int node:nodes)sum+=node;
         nodes.add(count-sum);
-        return nodes;
-    }
-    public static Vector<Integer> getNodes(int group){
-        Vector<Integer> nodes=new Vector<>(group);
-        for (int i=0;i<group-1;i++){
-            nodes.add(node_count);
-        }
         return nodes;
     }
     public static Vector<Integer> getOrigins(int upper,int count){
