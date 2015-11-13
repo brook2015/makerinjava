@@ -1,15 +1,27 @@
 package graph;
 
-import edu.princeton.cs.algs4.DirectedEdge;
-
 /**
  * Created by yaokaibin on 15-11-11.
  */
-public class WeightedPheromoneEdge extends DirectedEdge{
+public class WeightedPheromoneEdge{
+    private final int v;
+    private final int w;
+    private final double distance;
     private double pheromone;
-    public WeightedPheromoneEdge(int v, int w, double weight, double pheromone){
-        super(v,w,weight);
+    public WeightedPheromoneEdge(int v,int w,double distance,double pheromone){
+        this.v=v;
+        this.w=w;
+        this.distance=distance;
         this.pheromone=pheromone;
+    }
+    public int from(){
+        return v;
+    }
+    public int to(){
+        return w;
+    }
+    public double getDistance(){
+        return distance;
     }
     public double getPheromone(){
         return pheromone;

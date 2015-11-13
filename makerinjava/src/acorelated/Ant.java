@@ -1,5 +1,9 @@
 package acorelated;
 
+import graph.WeightedPheromoneEdge;
+import graph.WeightedPheromoneDigraph;
+
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
 
@@ -8,66 +12,65 @@ import java.util.Vector;
  */
 public class Ant {
     private boolean isOver;
-    private int node_count;
-    private int current_node;
+    private int nodeCount;
+    private int currentNode;
     private double alpha;
     private double beta;
     private double q;
     private double routeLength;
     private static Random random=new Random();
-    private Vector<Integer> route=new Vector<>();
-    public Ant(double _q,double _alpha,double _beta){
-        q=_q;
-        alpha=_alpha;
-        beta=_beta;
+    private Vector<WeightedPheromoneEdge> path=new Vector<>();
+    public Ant(double q,double alpha,double beta){
+        this.q=q;
+        this.alpha=alpha;
+        this.beta=beta;
     }
     public void initiate(int count,int origin){
         isOver=false;
         routeLength=Double.MAX_VALUE;
-        node_count=count;
-        current_node=origin;
-        route.clear();
-        route.add(origin);
+        nodeCount=count;
+        currentNode=origin;
+        path.clear();
     }
-    public void moveForward(double[][] pheromone,double[][] distance,Vector<Integer> allowedNodes){
+    public void moveForward(WeightedPheromoneDigraph digraph){
         if (isOver)return;
         double sum=0.0;
-        for (int i:allowedNodes){
-            sum+=Math.pow(pheromone[current_node][i],alpha)*Math.pow(1/distance[current_node][i],beta);
+        Iterable<WeightedPheromoneEdge> edges=digraph.allowedEdges(currentNode);
+        for (WeightedPheromoneEdge edge:edges){
+            sum+=Math.pow(edge.getPheromone(),alpha)*Math.pow(1/edge.getDistance(),beta);
         }
         double ap=0.0;
         double value=random.nextDouble();
-        for (int i:allowedNodes){
-            ap+=Math.pow(pheromone[current_node][i],alpha)*Math.pow(1/distance[current_node][i],beta)/sum;
+        for (WeightedPheromoneEdge edge:edges){
+            ap+=Math.pow(edge.getPheromone(),alpha)*Math.pow(1/edge.getDistance(),beta)/sum;
             if (ap>=value){
-                current_node=i;break;
+                currentNode=edge.to();
+                path.add(edge);
+                routeLength+=edge.getDistance();
+                break;
             }
         }
-        route.add(current_node);
-        allowedNodes.removeElement(current_node);
-        isOver=route.size()==node_count+1;
-        if (isOver)routeLength=getLength(distance);
+        digraph.addTravelledNode(currentNode);
+        isOver=nodeCount-1==path.size();
     }
     public String getRoute(){
         String _route="";
-        for (Integer r:route){
-            _route+=r+";";
+        Iterator<WeightedPheromoneEdge> iterator=path.iterator();
+        while (iterator.hasNext()){
+            WeightedPheromoneEdge edge=iterator.next();
+            _route+=edge.from()+"->"+edge.to()+";";
         }
         return _route;
     }
-    public double getLength(double[][] distance){
-        double _length=0.0;
-        for (int i=0;i<route.size()-1;i++){
-            _length+=distance[route.get(i)][route.get(i+1)];
-        }
-        return _length;
-    }
-    public void pheromoneUpdate(double[][] pheromone){
-        for (int i=0;i<route.size()-1;i++){
-            pheromone[route.get(i)][route.get(i+1)]+=getDelta();
+    public void pheromoneUpdate(){
+        for (WeightedPheromoneEdge edge:path){
+            edge.setPheromone(edge.getPheromone()+getDelta());
         }
     }
     private double getDelta(){
         return q/routeLength;
+    }
+    public double getRouteLength(){
+        return routeLength;
     }
 }
