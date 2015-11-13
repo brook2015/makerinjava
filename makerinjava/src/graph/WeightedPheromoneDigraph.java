@@ -3,22 +3,30 @@ package graph;
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by yaokaibin on 15-11-11.
  */
-public class EdgeWeightedPheroDigraph {
+public class WeightedPheromoneDigraph {
     private final int V;
     private int E;
     private Bag<DirectedPheromoneEdge>[] adj;
-    public EdgeWeightedPheroDigraph(int V){
+    private Set<Integer> travelled;
+    public WeightedPheromoneDigraph(int V){
         this.V=V;
         this.E=0;
         adj=(Bag<DirectedPheromoneEdge>[])new Bag[V];
         for (int v=0;v<V;v++){
             adj[v]=new Bag<>();
         }
+        travelled=new HashSet<>();
     }
-    public EdgeWeightedPheroDigraph(In in){
+    public Set<Integer> getTravelled(){
+        return travelled;
+    }
+    public WeightedPheromoneDigraph(In in){
         this(in.readInt());
         int E=in.readInt();
         if (E<0)throw new IllegalArgumentException("Number of edges must be nonnegative");
@@ -37,6 +45,14 @@ public class EdgeWeightedPheroDigraph {
     public int E(){return E;}
     public void addEdge(DirectedPheromoneEdge e){
         adj[e.from()].add(e);
+        E++;
+    }
+    public DirectedPheromoneEdge adj(int v,int w){
+        Iterable<DirectedPheromoneEdge> edges=adj(v);
+        for (DirectedPheromoneEdge e:edges){
+            if (w==e.to())return e;
+        }
+        return null;
     }
     public Iterable<DirectedPheromoneEdge> adj(int v){
         return adj[v];
