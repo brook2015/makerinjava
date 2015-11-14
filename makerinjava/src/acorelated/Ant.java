@@ -27,7 +27,7 @@ public class Ant {
     }
     public void initiate(int count,int origin){
         isOver=false;
-        routeLength=Double.MAX_VALUE;
+        routeLength=0;
         nodeCount=count;
         currentNode=origin;
         path.clear();
@@ -51,14 +51,12 @@ public class Ant {
             }
         }
         digraph.addTravelledNode(currentNode);
-        isOver=nodeCount-1==path.size();
+        isOver=nodeCount==path.size();
     }
     public String getRoute(){
         String _route="";
-        Iterator<WeightedPheromoneEdge> iterator=path.iterator();
-        while (iterator.hasNext()){
-            WeightedPheromoneEdge edge=iterator.next();
-            _route+=edge.from()+"->"+edge.to()+";";
+        for (WeightedPheromoneEdge p:path){
+            _route+=p.toString()+";";
         }
         return _route;
     }

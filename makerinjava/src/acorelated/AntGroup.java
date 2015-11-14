@@ -9,28 +9,17 @@ import java.util.*;
  */
 public class AntGroup {
     private int antCount;
-    private int nodeCount;
-    private int[] origins;
     private Ant[] ants;
-    private Set<Integer> untravelled;
     private static Random random=new Random();
-    public AntGroup(int antCount,int nodeCount,int[] origins){
-        if (antCount!=origins.length)throw new IllegalArgumentException("origin collection is invalid.");
+    private WeightedPheromoneDigraph digraph;
+    public AntGroup(int antCount,WeightedPheromoneDigraph digraph){
         this.antCount=antCount;
-        this.nodeCount=nodeCount;
-        this.origins=origins;
         this.ants=new Ant[antCount];
-        this.untravelled=new HashSet<>(nodeCount);
-    }
-    public void setUntravelled(Collection<Integer> collection) throws Exception{
-        if (0!=untravelled.size())throw new Exception("logic is wrong.");
-        untravelled.addAll(collection);
+        this.digraph=digraph;
     }
     public void initiate(){
-        for (int o:origins){
-            untravelled.remove(o);
-        }
-        int[] nodes= group(nodeCount - antCount, antCount);
+        int[] nodes=group(digraph.V() - antCount,antCount);
+        int[] origins=WeightedPheromoneDigraph.getOrigin();
         for (int i=0;i<antCount;i++){
             ants[i]=new Ant(1.0,2.0,2.0);
             ants[i].initiate(nodes[i],origins[i]);
@@ -51,11 +40,12 @@ public class AntGroup {
         return route;
     }
     public void iterate(WeightedPheromoneDigraph digraph){
-        while (untravelled.size()!=0){
+        while (digraph.isContinue()){
             for (int i=0;i<antCount;i++){
                 ants[i].moveForward(digraph);
             }
         }
+        digraph.initiate();
     }
     public void pheromoneUpdate(){
         for (Ant ant:ants){

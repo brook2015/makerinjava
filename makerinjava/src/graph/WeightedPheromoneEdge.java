@@ -29,4 +29,7 @@ public class WeightedPheromoneEdge{
     public void setPheromone(double value){
         pheromone=value;
     }
+    public String toString(){
+        return String.format("%d->%d %.2f %.2f",v,w,distance,pheromone);
+    }
 }
