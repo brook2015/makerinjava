@@ -57,7 +57,7 @@ public class WeightedPheromoneDigraph {
             if (v < 0 || v >= V) throw new IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (V-1));
             if (w < 0 || w >= V) throw new IndexOutOfBoundsException("vertex " + w + " is not between 0 and " + (V-1));
             double weight=in.readDouble();
-            addEdge(new WeightedPheromoneEdge(v,w,weight,0.0));
+            addEdge(new WeightedPheromoneEdge(v,w,weight,0.1));
         }
     }
     public int V(){
@@ -66,20 +66,20 @@ public class WeightedPheromoneDigraph {
     public int E(){
         return E;
     }
-    public void addEdge(WeightedPheromoneEdge edge) throws Exception{
-        if (!map.containsKey(edge.from()))throw new Exception("key error");
+    public void addEdge(WeightedPheromoneEdge edge) throws IllegalArgumentException{
+        if (!map.containsKey(edge.from()))throw new IllegalArgumentException("invalid edge");
         Bag<WeightedPheromoneEdge> edges=map.get(edge.from());
         edges.add(edge);
         E++;
     }
     public Iterable<WeightedPheromoneEdge> allowedEdges(int v){
-        Vector<WeightedPheromoneEdge> edges=new Vector<>();
-        for (WeightedPheromoneEdge edge: map.get(v)){
+        Bag<WeightedPheromoneEdge> bag=new Bag<>();
+        for (WeightedPheromoneEdge edge:map.get(v)){
             if (!travel.contains(edge.to())){
-                edges.add(edge);
+                bag.add(edge);
             }
         }
-        return edges;
+        return bag;
     }
     public Iterable<WeightedPheromoneEdge> adj(int v){
         return map.get(v);

@@ -15,8 +15,8 @@ public class Program {
         try{
             EdgeWeightedDigraph digraph=new EdgeWeightedDigraph(new In(args[0]));
             DijkstraAllPairsSP sp=new DijkstraAllPairsSP(digraph);
-            int[] nodes=new int[]{1,3,5,4,7};
-            int[] origins=new int[]{1,3};
+            int[] nodes=new int[]{1,2,0,3,5,4,6,7};
+            int[] origins=new int[]{1};
             WeightedPheromoneDigraph digraphWithPheromone=new WeightedPheromoneDigraph(nodes,origins);
             digraphWithPheromone.initiate();
             double dist;
@@ -33,7 +33,7 @@ public class Program {
                 System.out.println(e.toString());
             }
             System.out.println(digraphWithPheromone.E());
-            ACO aco=new ACO(5,2,2,0.3,digraphWithPheromone);
+            ACO aco=new ACO(200,200,origins.length,0.1,digraphWithPheromone);
             aco.evolve();
             System.out.println("best length: "+aco.getBestLength());
             System.out.println("best route: "+aco.getBestRoute());

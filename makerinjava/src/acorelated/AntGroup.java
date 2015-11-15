@@ -53,18 +53,25 @@ public class AntGroup {
         }
     }
     public static int[] group(int count, int group) throws IllegalArgumentException{
-        if (count<=group||count<=0||group<=0){
-            throw new IllegalArgumentException("arguments are invalid.");
+        if (count<group||count<=0||group<=0){
+            throw new IllegalArgumentException("invalid argument");
         }
         int[] nodes=new int[group];
-        int g=group,value;
-        for (int i=0;i<group-1;i++){
-            value=random.nextInt(count-g)+1;
-            nodes[i]=value;
-            count-=value;
-            g-=1;
+        if (count==group){
+            for (int i=0;i<group;i++){
+                nodes[i]=1;
+            }
         }
-        nodes[group-1]=count;
+        else {
+            int g=group,value;
+            for (int i=0;i<group-1;i++){
+                value=random.nextInt(count-g)+1;
+                nodes[i]=value;
+                count-=value;
+                g-=1;
+            }
+            nodes[group-1]=count;
+        }
         return nodes;
     }
 }

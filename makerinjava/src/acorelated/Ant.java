@@ -47,16 +47,16 @@ public class Ant {
                 currentNode=edge.to();
                 path.add(edge);
                 routeLength+=edge.getDistance();
+                digraph.addTravelledNode(currentNode);
+                isOver=nodeCount==path.size();
                 break;
             }
         }
-        digraph.addTravelledNode(currentNode);
-        isOver=nodeCount==path.size();
     }
     public String getRoute(){
         String _route="";
         for (WeightedPheromoneEdge p:path){
-            _route+=p.toString()+";";
+            _route+=p+";";
         }
         return _route;
     }
