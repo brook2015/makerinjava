@@ -1,10 +1,6 @@
 import edu.princeton.cs.algs4.DijkstraAllPairsSP;
 import edu.princeton.cs.algs4.EdgeWeightedDigraph;
 import edu.princeton.cs.algs4.In;
-import travel.AbstractTravellerFactory;
-import travel.TravelInfo;
-import travel.TravelSetFactory;
-import travel.Traveller;
 
 
 /**
@@ -15,14 +11,7 @@ public class Program {
         try{
             EdgeWeightedDigraph digraph=new EdgeWeightedDigraph(new In(args[0]));
             DijkstraAllPairsSP sp=new DijkstraAllPairsSP(digraph);
-            int[] nodes=new int[]{1,2,0,3,5,4,6,7};
-            int[] origins=new int[]{1};
-            int nodeCount=digraph.V();
-            AbstractTravellerFactory factory=new TravelSetFactory(0,nodeCount,3,8);
-            Iterable<Traveller> travellers=factory.createTraveller(50);
-            for (Traveller traveller:travellers){
-                System.out.println(traveller);
-            }
+
             /*WeightedPheromoneDigraph digraphWithPheromone=new WeightedPheromoneDigraph(nodes,origins);
             digraphWithPheromone.initiate();
             double dist;
