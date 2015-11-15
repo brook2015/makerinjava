@@ -1,10 +1,10 @@
-import acorelated.ACO;
-import acorelated.AntGroup;
 import edu.princeton.cs.algs4.DijkstraAllPairsSP;
 import edu.princeton.cs.algs4.EdgeWeightedDigraph;
 import edu.princeton.cs.algs4.In;
-import graph.WeightedPheromoneDigraph;
-import graph.WeightedPheromoneEdge;
+import travel.AbstractTravellerFactory;
+import travel.TravelInfo;
+import travel.TravelSetFactory;
+import travel.Traveller;
 
 
 /**
@@ -17,7 +17,13 @@ public class Program {
             DijkstraAllPairsSP sp=new DijkstraAllPairsSP(digraph);
             int[] nodes=new int[]{1,2,0,3,5,4,6,7};
             int[] origins=new int[]{1};
-            WeightedPheromoneDigraph digraphWithPheromone=new WeightedPheromoneDigraph(nodes,origins);
+            int nodeCount=digraph.V();
+            AbstractTravellerFactory factory=new TravelSetFactory();
+            Iterable<Traveller> travellers=factory.createTraveller(nodeCount, 5);
+            for (Traveller traveller:travellers){
+                System.out.println(traveller);
+            }
+            /*WeightedPheromoneDigraph digraphWithPheromone=new WeightedPheromoneDigraph(nodes,origins);
             digraphWithPheromone.initiate();
             double dist;
             WeightedPheromoneEdge edge;
@@ -28,15 +34,11 @@ public class Program {
                     digraphWithPheromone.addEdge(edge);
                 }
             }
-            Iterable<WeightedPheromoneEdge> edges=digraphWithPheromone.edges();
-            for (WeightedPheromoneEdge e:edges){
-                System.out.println(e.toString());
-            }
             System.out.println(digraphWithPheromone.E());
             ACO aco=new ACO(200,200,origins.length,0.1,digraphWithPheromone);
             aco.evolve();
             System.out.println("best length: "+aco.getBestLength());
-            System.out.println("best route: "+aco.getBestRoute());
+            System.out.println("best route: "+aco.getBestRoute());*/
         }catch (Exception e){
             e.printStackTrace();
         }
