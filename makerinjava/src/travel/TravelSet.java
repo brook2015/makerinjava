@@ -5,18 +5,15 @@ package travel;
  */
 public class TravelSet implements Traveller {
     private int amount;
-    private static TravelInfo info;
+    private TravelInfo info;
 
-    public TravelSet(int amount) {
+    public TravelSet(int amount,TravelInfo info) {
         this.amount = amount;
+        this.info=info;
     }
 
-    public static TravelInfo getInfo() {
+    public TravelInfo getInfo() {
         return info;
-    }
-
-    public static void setInfo(TravelInfo info) {
-        TravelSet.info = info;
     }
 
     public int getAmount() {
@@ -25,6 +22,6 @@ public class TravelSet implements Traveller {
 
     @Override
     public String toString() {
-        return String.format(info+" amount: "+amount);
+        return info+" "+amount;
     }
 }

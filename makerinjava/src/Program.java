@@ -18,8 +18,8 @@ public class Program {
             int[] nodes=new int[]{1,2,0,3,5,4,6,7};
             int[] origins=new int[]{1};
             int nodeCount=digraph.V();
-            AbstractTravellerFactory factory=new TravelSetFactory();
-            Iterable<Traveller> travellers=factory.createTraveller(nodeCount, 5);
+            AbstractTravellerFactory factory=new TravelSetFactory(0,nodeCount,3,8);
+            Iterable<Traveller> travellers=factory.createTraveller(50);
             for (Traveller traveller:travellers){
                 System.out.println(traveller);
             }

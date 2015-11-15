@@ -28,6 +28,6 @@ public class TravelInfo implements Traveller {
 
     @Override
     public String toString() {
-        return String.format("%d->%d %.2f",origin,destination,arriveTime);
+        return String.format("%d->%d %.1f",origin,destination,arriveTime);
     }
 }
