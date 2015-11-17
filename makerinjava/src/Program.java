@@ -20,16 +20,17 @@ public class Program {
             DijkstraAllPairsSP sp=new DijkstraAllPairsSP(digraph);
             int[] vertex=new int[]{0,1,2,3,4,5,6};
             int[] terminals=new int[]{1,3,5};
-            WeightedPheromoneDigraph wpd=new WeightedPheromoneDigraph(vertex,terminals);
+            WeightedPheromoneDigraph.setVertex(vertex);
+            WeightedPheromoneDigraph.setTerminals(terminals);
             for (int o:vertex){
                 for (int d:vertex){
                     double dist=sp.dist(o,d);
                     WeightedPheromoneEdge edge=new WeightedPheromoneEdge(o,d,dist,0.1);
-                    wpd.addEdge(edge);
+                    WeightedPheromoneDigraph.addEdge(edge);
                     System.out.println(edge);
                 }
             }
-            ACO aco=new ACO(200,20,2,0.1,wpd);
+            ACO aco=new ACO(200,20,2,0.1,new WeightedPheromoneDigraph(vertex.length));
             aco.evolve();
             System.out.println(aco.getBestRoute());
             System.out.println(aco.getBestLength());

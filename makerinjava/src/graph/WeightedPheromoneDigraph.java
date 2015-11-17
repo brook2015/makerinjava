@@ -9,31 +9,29 @@ import java.util.*;
  * Created by yaokaibin on 15-11-11.
  */
 public class WeightedPheromoneDigraph {
-    private final int V;
-    private int E;
+    private static int V;
+    private static int E;
     private static Map<Integer,Bag<WeightedPheromoneEdge>> map;
-    private Set<Integer> travel;
     private static int[] vertex;
     private static int[] terminals;
     private static Random random=new Random();
-
-    public static void setMap(Map<Integer, Bag<WeightedPheromoneEdge>> map) {
-        WeightedPheromoneDigraph.map = map;
-    }
+    private Set<Integer> travel=new HashSet<>();
 
     public WeightedPheromoneDigraph(int V){
-        this.V=V;
-        this.E=0;
-        this.travel=new HashSet<>();
+        WeightedPheromoneDigraph.V=V;
+        WeightedPheromoneDigraph.E=0;
+        WeightedPheromoneDigraph.map=new HashMap<>();
+        for (int v:vertex)map.put(v,new Bag<>());
     }
-    public WeightedPheromoneDigraph(int[] _vertex,int[] _terminals){
-        this(_vertex.length);
-        vertex=_vertex;
-        terminals=_terminals;
-        for (int v:_vertex){
-            map.put(v,new Bag<>());
-        }
+
+    public static void setVertex(int[] vertex) {
+        WeightedPheromoneDigraph.vertex = vertex;
     }
+
+    public static void setTerminals(int[] terminals) {
+        WeightedPheromoneDigraph.terminals = terminals;
+    }
+
     public void initiate(int[] origins){
         travel.clear();
         for (int o:origins)travel.add(o);
@@ -68,16 +66,15 @@ public class WeightedPheromoneDigraph {
             addEdge(new WeightedPheromoneEdge(v,w,weight,0.1));
         }
     }
-    public int V(){
+    public static int V(){
         return V;
     }
-    public int E(){
+    public static int E(){
         return E;
     }
-    public void addEdge(WeightedPheromoneEdge edge) throws IllegalArgumentException{
+    public static void addEdge(WeightedPheromoneEdge edge) throws IllegalArgumentException{
         if (!map.containsKey(edge.from()))throw new IllegalArgumentException("invalid edge");
-        Bag<WeightedPheromoneEdge> edges=map.get(edge.from());
-        edges.add(edge);
+        map.get(edge.from()).add(edge);
         E++;
     }
     public Iterable<WeightedPheromoneEdge> allowedEdges(int v){

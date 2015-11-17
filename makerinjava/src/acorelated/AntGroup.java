@@ -21,7 +21,7 @@ public class AntGroup {
         }
     }
     public void initiate(){
-        int vertexCount=digraph.V();
+        int vertexCount=WeightedPheromoneDigraph.V();
         int[] times=group(vertexCount-antCount,antCount);
         int[] origins=WeightedPheromoneDigraph.getOrigin(antCount);
         digraph.initiate(origins);
