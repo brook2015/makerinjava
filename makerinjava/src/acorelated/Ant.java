@@ -13,9 +13,9 @@ import java.util.Vector;
 public class Ant {
     private int nodeCount;
     private int currentNode;
-    private double alpha;
-    private double beta;
-    private double q;
+    private final double alpha;
+    private final double beta;
+    private final double q;
     private double routeLength;
     private static Random random=new Random();
     private Vector<WeightedPheromoneEdge> path=new Vector<>();

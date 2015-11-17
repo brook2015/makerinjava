@@ -11,29 +11,32 @@ import java.util.*;
 public class WeightedPheromoneDigraph {
     private final int V;
     private int E;
-    private Map<Integer,Bag<WeightedPheromoneEdge>> map;
+    private static Map<Integer,Bag<WeightedPheromoneEdge>> map;
     private Set<Integer> travel;
     private static int[] vertex;
-    private static int[] origin;
+    private static int[] terminals;
+    private static Random random=new Random();
+
+    public static void setMap(Map<Integer, Bag<WeightedPheromoneEdge>> map) {
+        WeightedPheromoneDigraph.map = map;
+    }
+
     public WeightedPheromoneDigraph(int V){
         this.V=V;
         this.E=0;
-        this.map=new HashMap<>();
         this.travel=new HashSet<>();
     }
-    public WeightedPheromoneDigraph(int[] _vertex,int[] _origin){
+    public WeightedPheromoneDigraph(int[] _vertex,int[] _terminals){
         this(_vertex.length);
         vertex=_vertex;
-        origin=_origin;
+        terminals=_terminals;
         for (int v:_vertex){
             map.put(v,new Bag<>());
         }
     }
-    public void initiate(){
+    public void initiate(int[] origins){
         travel.clear();
-        for (int o:origin){
-            travel.add(o);
-        }
+        for (int o:origins)travel.add(o);
     }
     public Set<Integer> getTravel(){
         return travel;
@@ -41,8 +44,13 @@ public class WeightedPheromoneDigraph {
     public static int[] getVertex(){
         return vertex;
     }
-    public static int[] getOrigin(){
-        return origin;
+    public static int[] getOrigin(int k){
+        if (k<=0)throw new IllegalArgumentException("invalid value of k");
+        int[] origins=new int[k];
+        for (int i=0;i<k;i++){
+            origins[i]=random.nextInt(terminals.length);
+        }
+        return origins;
     }
     public boolean isContinue(){
         return travel.size()!=V;

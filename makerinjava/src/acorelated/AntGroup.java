@@ -16,13 +16,17 @@ public class AntGroup {
         this.antCount=antCount;
         this.ants=new Ant[antCount];
         this.digraph=digraph;
-    }
-    public void initiate(){
-        int[] nodes=group(digraph.V() - antCount,antCount);
-        int[] origins=WeightedPheromoneDigraph.getOrigin();
         for (int i=0;i<antCount;i++){
             ants[i]=new Ant(1.0,2.0,2.0);
-            ants[i].initiate(nodes[i],origins[i]);
+        }
+    }
+    public void initiate(){
+        int vertexCount=digraph.V();
+        int[] times=group(vertexCount-antCount,antCount);
+        int[] origins=WeightedPheromoneDigraph.getOrigin(antCount);
+        digraph.initiate(origins);
+        for (int i=0;i<antCount;i++){
+            ants[i].initiate(times[i],origins[i]);
         }
     }
     public double getLength(){
@@ -45,7 +49,6 @@ public class AntGroup {
                 ants[i].moveForward(digraph);
             }
         }
-        digraph.initiate();
     }
     public void pheromoneUpdate(){
         for (Ant ant:ants){
